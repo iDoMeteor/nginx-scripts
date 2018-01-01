@@ -34,6 +34,10 @@
 set -euo pipefail
 IFS=$'\n\t'
 
+# Constants
+HOSTNAMEREGEX="^[0-9a-zA-Z][0-9a-zA-Z-_]{0,100}[0-9a-zA-Z]"
+SELFROOT=`dirname $0`
+
 # Check for arguments or provide help
 if [ $# -eq 0 ] ; then
   echo "Usage:"
@@ -50,7 +54,6 @@ if [ 'root' != $WHO ] ; then
 fi
 
 # Check for template
-SELFROOT=`dirname $0`
 if [ ! -d $SELFROOT/templates ] ; then
   echo "`basename` $0/templates does not exist, cannot continue."
   exit 1
@@ -91,8 +94,7 @@ if [ ! -v HOST ] ; then
   echo 'Host name is required.'
   exit 1
 fi
-REGEX="^[0-9a-zA-Z][0-9a-zA-Z-_]{0,100}"
-if [[ $HOST =~ $REGEX ]] ; then
+if [[ $HOST =~ $HOSTNAMEREGEX ]] ; then
   SUBDIR=${HOST:0:1}
 else
   echo 'Invalid host name supplied.'
