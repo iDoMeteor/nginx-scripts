@@ -91,13 +91,28 @@ if [ ! -v HOST ] ; then
   echo 'Host name is required.'
   exit 1
 fi
-if [ -f /etc/nginx/sites-available/$HOST\.conf ] ; then
-  echo 'Virtual host configuration already exists.'
+REGEX="^[0-9a-zA-Z][0-9a-zA-Z-_]{0,100}"
+if [[ $HOST =~ $REGEX ]] ; then
+  SUBDIR=${HOST:0:1}
+else
+  echo 'Invalid host name supplied.'
   exit 1
 fi
-if [ -L /etc/nginx/sites-enabled/$HOST\.conf ] ; then
-  echo 'Virtual host configuration is already enabled.'
-  exit 1
+if [ ! -d /etc/nginx/sites-available/$SUBDDIR ] ; then
+  mkdir -p /etc/nginx/sites-available/$SUBDIR
+fi
+if [ ! -d /etc/nginx/sites-enabled/$SUBDDIR ] ; then
+  mkdir -p /etc/nginx/sites-enabled/$SUBDIR
+fi
+if [ -f /etc/nginx/sites-enabled/$SUBDIR/$HOST\.conf ] ; then
+    mv /etc/nginx/sites-enabled/$SUBDIR/$HOST.conf /etc/nginx/sites-enabled/$SUBDIR/$HOST.conf.bak
+fi
+if [ -L /etc/nginx/sites-enabled/$SUBDIR/$HOST\.conf ] ; then
+  rm -f /etc/nginx/sites-enabled/$SUBDIR/$HOST.conf
+fi
+if [ -f /etc/nginx/sites-available/$SUBDIR/$HOST\.conf ] ; then
+    mv /etc/nginx/sites-available/$SUBDIR/$HOST.conf /etc/nginx/sites-available/$SUBDIR/$HOST.conf.bak
+else
 fi
 
 # Check verbosity
@@ -105,11 +120,21 @@ if [ -v VERBOSE ] ; then
   set -v
 fi
 
+
 # Create /etc/nginx/sites-available/$HOST.conf
-source templates/php-subdomain.conf | tee /etc/nginx/sites-available/$HOST.conf
+if [ -f $SELFROOT/nginx-echo-template.sh ] ; then
+  source $SELFROOT/nginx-echo-template.sh | tee /etc/nginx/sites-available/$SUBDIR/$HOST.conf
+else
+  echo "Cannot source global template, cannot continue."
+  exit 1
+fi
 
 # Enable
-ln -s /etc/nginx/sites-available/$HOST.conf /etc/nginx/sites-enabled/$HOST.conf
+ln -s /etc/nginx/sites-available/$SUBDIR/$HOST.conf /etc/nginx/sites-enabled/$SUBDIR/$HOST.conf
+if [ 0 -ne $? ] ; then
+  echo "Failed to enable host file."
+  exit 1
+fi
 
 # Restart Nginx
 if [ -v YES ] ; then
