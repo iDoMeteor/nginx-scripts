@@ -24,9 +24,7 @@
 #  ORGANIZATION: @iDoMeteor
 #       CREATED: 04/15/2016 15:33
 #      REVISION:  001
-#
-#          TODO: Make template system more configurable
-#                ORGANIZE IN DIRS BY STARTING CHAR!
+#          TODO:
 #
 #===============================================================================
 
