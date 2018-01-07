@@ -1,0 +1,2 @@
+#!/bin/bash
+find /var/run/nginx/cache/ -type f -delete

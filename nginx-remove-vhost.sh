@@ -75,14 +75,6 @@ if [ ! -v HOST ] ; then
   echo 'A fully qualified domain or host name is required.'
   exit 1
 fi
-if [ ! -f /etc/nginx/sites-available/$HOST\.conf ] ; then
-  echo 'Virtual host configuration does not exist, cannot enable.'
-  exit 1
-fi
-if [ -L /etc/nginx/sites-enabled/$HOST\.conf ] ; then
-  echo 'Virtual host configuration is already enabled.'
-  exit 1
-fi
 
 # Check verbosity
 if [ -v VERBOSE ] ; then
@@ -90,9 +82,15 @@ if [ -v VERBOSE ] ; then
 fi
 
 # Get'er done
-ln -s /etc/nginx/sites-available/$HOST.conf /etc/nginx/sites-enabled/$HOST.conf
-if [ 0 -ne $? ] ; then
-  echo "Failed to link $HOST.conf"
+rm /etc/nginx/sites-enabled/$HOST.conf
+if [ -f /etc/nginx/sites-enabled/$HOST\.conf || -L /etc/nginx/sites-enabled/$HOST\.conf ]
+then
+  echo "Failed to remove $HOST.conf from sites-enabled"
+  exit 1
+fi
+rm /etc/nginx/sites-available/$HOST.conf
+if [ -f /etc/nginx/sites-available/$HOST\.conf ] ; then
+  echo "Failed to remove $HOST.conf from sites-available"
   exit 1
 fi
 
@@ -115,4 +113,4 @@ else
   fi
 fi
 
-e
+exit 0
