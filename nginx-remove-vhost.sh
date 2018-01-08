@@ -19,7 +19,7 @@
 #  REQUIREMENTS: Nginx
 #          BUGS: ---
 #         NOTES: ---
-#        AUTHOR: Jason White (idometeor@gmail.com),
+#        AUTHOR: Jason (idometeor@gmail.com),
 #  ORGANIZATION: @iDoMeteor
 #       CREATED: 12/17/2017 15:34
 #      REVISION:  001

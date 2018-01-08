@@ -20,7 +20,7 @@
 #  REQUIREMENTS: Nginx
 #          BUGS: ---
 #         NOTES: ---
-#        AUTHOR: Jason White (idometeor@gmail.com),
+#        AUTHOR: Jason (idometeor@gmail.com),
 #  ORGANIZATION: @iDoMeteor
 #       CREATED: 04/15/2016 15:33
 #      REVISION:  001
@@ -33,7 +33,7 @@ set -euo pipefail
 IFS=$'\n\t'
 
 # Constants
-HOSTNAMEREGEX="^[0-9a-zA-Z][0-9a-zA-Z-_]{0,100}[0-9a-zA-Z]"
+HOSTNAMEREGEX="^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$"
 SELFROOT=`dirname $0`
 
 # Check for arguments or provide help

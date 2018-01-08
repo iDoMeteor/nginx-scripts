@@ -8,11 +8,11 @@
 #   DESCRIPTION: 
 # 
 #       OPTIONS: ---
-#  REQUIREMENTS: ---
+#  REQUIREMENTS: Nginx
 #          BUGS: ---
 #         NOTES: ---
-#        AUTHOR: YOUR NAME (), 
-#  ORGANIZATION: 
+#        AUTHOR: Jason (idometeor@gmail.com),
+#  ORGANIZATION: @iDoMeteor
 #       CREATED: 01/01/2018 08:44
 #      REVISION:  ---
 #===============================================================================
@@ -22,10 +22,10 @@ set -euo pipefail
 IFS=$'\n\t'
 
 # Constants
-HOSTNAMEREGEX="^[0-9a-zA-Z][0-9a-zA-Z-_]{0,100}[0-9a-zA-Z]"
+HOSTNAMEREGEX="^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\-]*[A-Za-z0-9])$"
 NUMSCRIPTS=4 # This * number of test objects calculates test pass/fail rate
 NUMOBJECTS=0 # This * number of test objects calculates test pass/fail rate
-RECIPIENTS=""
+RECIPIENTS="idometeor@gmail.com"
 SELFROOT=`dirname $0`
 TESTOBJECTS="test-objects.txt"
 
